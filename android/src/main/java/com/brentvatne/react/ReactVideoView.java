@@ -288,8 +288,11 @@ public class ReactVideoView extends ScalableVideoView implements MediaPlayer.OnP
         mEventEmitter.receiveEvent(getId(), Events.EVENT_LOAD_START.toString(), event);
 
         // not async to prevent random crashes on Android playback from local resource due to race conditions
+		// justim: using async makes the video player usable, we don't use local file anyway so this shouldn't be a problem
+		//         we experienced a lot of lag when rendering a video within a listview, which re-renders the video component
+		//         a lot of times making the UI hang for a bit
         try {
-          prepare(this);
+          prepareAsync(this);
         } catch (Exception e) {
           e.printStackTrace();
         }
